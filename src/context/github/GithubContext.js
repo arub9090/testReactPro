@@ -7,6 +7,7 @@ const GITHUB_TOKEN = process.env.REACT_APP_GITHUB_TOKEN;
 export const GithubProvider = ({ children }) => {
   const initialState = {
     users: [],
+    single_user: {},
     loading: false,
   };
 
@@ -14,11 +15,11 @@ export const GithubProvider = ({ children }) => {
 
   // this fetch user was for tesing purpose.
 
-  const clearSearch=()=>{
+  const clearSearch = () => {
     dispatch({
-      type: 'CLEAR_USERS'
-    })
-  }
+      type: "CLEAR_USERS",
+    });
+  };
   const searchUsers = async (text) => {
     setLoading();
 
@@ -37,6 +38,25 @@ export const GithubProvider = ({ children }) => {
     });
   };
 
+  // fetch One Single User
+  const fetchOneUser = async (login) => {
+    setLoading();
+
+    const res = await fetch(`${GITHUB_API}/users/${login}`, {
+      headers: { Authorization: `${GITHUB_TOKEN}` },
+    });
+
+    const singleUserData = await res.json();
+    if(res.status === 404){
+      window.location= '/notfound'
+    }else{
+      dispatch({
+        type: "GET_SINGLE_USER",
+        payload: singleUserData,
+      });
+    }
+  };
+
   //set loading function to use it globally
 
   const setLoading = () =>
@@ -46,7 +66,14 @@ export const GithubProvider = ({ children }) => {
 
   return (
     <GithubContext.Provider
-      value={{ users: state.users, loading: state.loading, searchUsers, clearSearch }}
+      value={{
+        users: state.users,
+        loading: state.loading,
+        searchUsers,
+        clearSearch,
+        single_user: state.single_user,
+        fetchOneUser,
+      }}
     >
       {children}
     </GithubContext.Provider>

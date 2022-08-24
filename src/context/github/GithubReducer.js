@@ -6,6 +6,12 @@ switch (action.type) {
             users: action.payload,
             loading: false,
         }
+    case 'GET_SINGLE_USER':
+        return {
+            ...state,
+            single_user: action.payload,
+            loading: false,
+        }
 
     case 'CLEAR_USERS':
         return{
