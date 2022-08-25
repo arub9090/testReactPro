@@ -9,7 +9,7 @@ function UserItem({ myuser: { login, avatar_url } }) {
         <div class="basic-1/4 m-2">
           <div class="avatar">
             <div class="w-24 rounded-full">
-              <img src={avatar_url} />
+              <img src={avatar_url} alt='neededSodoingThisIgnore' />
             </div>
           </div>
         </div>
